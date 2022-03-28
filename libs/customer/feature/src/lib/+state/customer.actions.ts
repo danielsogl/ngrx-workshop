@@ -2,6 +2,7 @@ import { Customer } from '@eternal/customer/model';
 import { createAction, props } from '@ngrx/store';
 
 export const load = createAction('[Customer] Load');
+export const loadFailed = createAction('[Customer] Load Failed');
 export const loaded = createAction(
   '[Customer] Loaded',
   props<{ customers: Customer[] }>()
