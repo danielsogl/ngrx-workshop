@@ -32,4 +32,5 @@ export const fromCustomer = {
   selectCustomerWithSelected,
   selectSelectedCustomer,
   selectById,
+  selectSelectedId,
 };
