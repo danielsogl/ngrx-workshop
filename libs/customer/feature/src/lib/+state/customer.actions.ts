@@ -28,7 +28,7 @@ export const updated = createAction(
 
 export const remove = createAction(
   '[Customer] Remove',
-  props<{ customer: Customer }>()
+  props<{ customer: Customer; forward: string; message: string }>()
 );
 export const removed = createAction(
   '[CUSTOMER] Removed',

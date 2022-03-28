@@ -73,10 +73,13 @@ export class CustomerEffects {
   remove$ = createEffect(() =>
     this.actions$.pipe(
       ofType(remove),
-      concatMap(({ customer }) =>
-        this.http.delete<Customer[]>(`${this.#baseUrl}/${customer.id}`)
+      concatMap(({ customer, forward, message }) =>
+        this.http.delete<Customer[]>(`${this.#baseUrl}/${customer.id}`).pipe(
+          tap(() => this.router.navigateByUrl(forward)),
+          tap(() => this.uiMessage.info(message))
+        )
       ),
-      tap(() => this.router.navigateByUrl('/customer')),
+
       map(() => load())
     )
   );
