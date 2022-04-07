@@ -8,8 +8,8 @@ import { fromMaster } from '@eternal/shared/master-data';
 import { Store } from '@ngrx/store';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { remove, update } from '../+state/customers.actions';
-import { fromCustomer } from '../+state/customers.selectors';
+import { remove, update } from '../../../../data/src/lib/customers.actions';
+import { fromCustomer } from '../../../../data/src/lib/customers.selectors';
 
 @Component({
   selector: 'eternal-edit-customer',

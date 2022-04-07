@@ -6,7 +6,7 @@ import { Options } from '@eternal/shared/form';
 import { fromMaster } from '@eternal/shared/master-data';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { add } from '../+state/customers.actions';
+import { add } from '../../../../data/src/lib/customers.actions';
 
 @Component({
   selector: 'eternal-add-customer',

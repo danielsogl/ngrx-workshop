@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, NgModule } from '@angular/core';
 import { CustomersComponentModule } from '@eternal/customers/ui';
 import { Store } from '@ngrx/store';
-import { select, unselect } from '../+state/customers.actions';
-import { fromCustomer } from '../+state/customers.selectors';
+import { select, unselect } from '../../../../data/src/lib/customers.actions';
+import { fromCustomer } from '../../../../data/src/lib/customers.selectors';
 
 @Component({
   template: ` <eternal-customers

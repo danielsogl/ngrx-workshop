@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { load } from '../+state/customers.actions';
+import { load } from '../../../../data/src/lib/customers.actions';
 
 @Injectable({
   providedIn: 'root',
