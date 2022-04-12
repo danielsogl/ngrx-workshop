@@ -1,7 +1,7 @@
 {
   "version": 2,
   "projects": {
-    "booking": "libs/booking",
+    "bookings": "libs/bookings",
     "customers-data": "libs/customers/data",
     "customers-feature": "libs/customers/feature",
     "customers-model": "libs/customers/model",
