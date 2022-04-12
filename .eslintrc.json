@@ -25,7 +25,11 @@
               },
               {
                 "sourceTag": "domain:bookings",
-                "onlyDependOnLibsWithTags": ["domain:bookings", "domain:shared"]
+                "onlyDependOnLibsWithTags": [
+                  "domain:bookings",
+                  "domain:customers:api",
+                  "domain:shared"
+                ]
               },
               {
                 "sourceTag": "domain:customers",
@@ -35,12 +39,26 @@
                 ]
               },
               {
+                "sourceTag": "domain:customers:api",
+                "onlyDependOnLibWithTags": ["domain:customers"]
+              },
+              {
                 "sourceTag": "domain:diary",
                 "onlyDependOnLibsWithTags": ["domain:diary", "domain:shared"]
               },
               {
+                "sourceTag": "type:api",
+                "onlyDependOnLibWithTags": [
+                  "type:feature",
+                  "type:data",
+                  "type:ui",
+                  "type:model"
+                ]
+              },
+              {
                 "sourceTag": "type:feature",
                 "onlyDependOnLibsWithTags": [
+                  "type:api",
                   "type:data",
                   "type:ui",
                   "type:model",
