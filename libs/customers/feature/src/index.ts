@@ -1,4 +1,4 @@
-import { fromCustomer } from '../../data/src/lib/customers.selectors';
+import { fromCustomers } from '@eternal/customers/data';
 
-export const selectSelectedCustomer = fromCustomer.selectSelectedCustomer;
+export const selectSelectedCustomer = fromCustomers.selectSelectedCustomer;
 export * from './lib/customers-feature.module';

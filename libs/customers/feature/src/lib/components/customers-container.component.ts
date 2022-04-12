@@ -2,8 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, NgModule } from '@angular/core';
 import { CustomersComponentModule } from '@eternal/customers/ui';
 import { Store } from '@ngrx/store';
-import { select, unselect } from '../../../../data/src/lib/customers.actions';
-import { fromCustomer } from '../../../../data/src/lib/customers.selectors';
+import { customersActions, fromCustomers } from '@eternal/customers/data';
 
 @Component({
   template: ` <eternal-customers
@@ -14,16 +13,16 @@ import { fromCustomer } from '../../../../data/src/lib/customers.selectors';
   ></eternal-customers>`,
 })
 export class CustomersContainerComponent {
-  customers$ = this.store.select(fromCustomer.selectCustomerWithSelected);
+  customers$ = this.store.select(fromCustomers.selectCustomerWithSelected);
 
   constructor(private store: Store) {}
 
   setSelected(id: number) {
-    this.store.dispatch(select({ id }));
+    this.store.dispatch(customersActions.select({ id }));
   }
 
   setUnselected() {
-    this.store.dispatch(unselect());
+    this.store.dispatch(customersActions.unselect());
   }
 }
 

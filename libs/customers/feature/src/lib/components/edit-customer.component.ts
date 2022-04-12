@@ -8,8 +8,7 @@ import { fromMaster } from '@eternal/shared/master-data';
 import { Store } from '@ngrx/store';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { remove, update } from '../../../../data/src/lib/customers.actions';
-import { fromCustomer } from '../../../../data/src/lib/customers.selectors';
+import { customersActions, fromCustomers } from '@eternal/customers/data';
 
 @Component({
   selector: 'eternal-edit-customer',
@@ -29,7 +28,7 @@ export class EditCustomerComponent {
     const countries$ = this.store.select(fromMaster.selectCountries);
     const customer$ = this.store
       .select(
-        fromCustomer.selectById(
+        fromCustomers.selectById(
           Number(this.route.snapshot.paramMap.get('id') || '')
         )
       )
@@ -49,7 +48,7 @@ export class EditCustomerComponent {
 
   submit(customer: Customer) {
     this.store.dispatch(
-      update({
+      customersActions.update({
         customer: { ...customer, id: this.customerId },
       })
     );
@@ -57,7 +56,9 @@ export class EditCustomerComponent {
 
   remove(customer: Customer) {
     this.store.dispatch(
-      remove({ customer: { ...customer, id: this.customerId } })
+      customersActions.remove({
+        customer: { ...customer, id: this.customerId },
+      })
     );
   }
 
