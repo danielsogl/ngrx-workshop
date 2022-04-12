@@ -13,7 +13,7 @@ import { customersActions, fromCustomers } from '@eternal/customers/data';
   ></eternal-customers>`,
 })
 export class CustomersContainerComponent {
-  customers$ = this.store.select(fromCustomers.selectCustomerWithSelected);
+  customers$ = this.store.select(fromCustomers.selectCustomersWithSelected);
 
   constructor(private store: Store) {}
 
