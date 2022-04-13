@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, NgModule } from '@angular/core';
 import { CustomersComponentModule } from '@eternal/customers/ui';
-import { Store } from '@ngrx/store';
-import { customersActions, fromCustomers } from '@eternal/customers/data';
+import { CustomersRepository } from '@eternal/customers/data';
 
 @Component({
   template: ` <eternal-customers
@@ -13,16 +12,16 @@ import { customersActions, fromCustomers } from '@eternal/customers/data';
   ></eternal-customers>`,
 })
 export class CustomersContainerComponent {
-  customers$ = this.store.select(fromCustomers.selectCustomersWithSelected);
+  customers$ = this.customersRepository.customersWithSelected$;
 
-  constructor(private store: Store) {}
+  constructor(private customersRepository: CustomersRepository) {}
 
   setSelected(id: number) {
-    this.store.dispatch(customersActions.select({ id }));
+    this.customersRepository.select(id);
   }
 
   setUnselected() {
-    this.store.dispatch(customersActions.unselect());
+    this.customersRepository.unselect();
   }
 }
 

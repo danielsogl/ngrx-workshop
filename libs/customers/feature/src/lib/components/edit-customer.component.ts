@@ -8,7 +8,7 @@ import { fromMaster } from '@eternal/shared/master-data';
 import { Store } from '@ngrx/store';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { customersActions, fromCustomers } from '@eternal/customers/data';
+import { CustomersRepository } from '@eternal/customers/data';
 
 @Component({
   selector: 'eternal-edit-customer',
@@ -24,14 +24,14 @@ export class EditCustomerComponent {
   data$: Observable<{ customer: Customer; countries: Options }>;
   customerId = 0;
 
-  constructor(private store: Store, private route: ActivatedRoute) {
+  constructor(
+    private store: Store,
+    private customersRepository: CustomersRepository,
+    private route: ActivatedRoute
+  ) {
     const countries$ = this.store.select(fromMaster.selectCountries);
-    const customer$ = this.store
-      .select(
-        fromCustomers.selectById(
-          Number(this.route.snapshot.paramMap.get('id') || '')
-        )
-      )
+    const customer$ = this.customersRepository
+      .findById(Number(this.route.snapshot.paramMap.get('id') || ''))
       .pipe(
         this.verifyCustomer,
         map((customer) => {
@@ -47,19 +47,11 @@ export class EditCustomerComponent {
   }
 
   submit(customer: Customer) {
-    this.store.dispatch(
-      customersActions.update({
-        customer: { ...customer, id: this.customerId },
-      })
-    );
+    this.customersRepository.update({ ...customer, id: this.customerId });
   }
 
   remove(customer: Customer) {
-    this.store.dispatch(
-      customersActions.remove({
-        customer: { ...customer, id: this.customerId },
-      })
-    );
+    this.customersRepository.remove({ ...customer, id: this.customerId });
   }
 
   private verifyCustomer(customer$: Observable<undefined | Customer>) {

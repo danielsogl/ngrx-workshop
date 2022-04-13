@@ -1,11 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import { filter, map } from 'rxjs';
 import { load, loaded } from './bookings.actions';
 import { Booking } from './bookings.reducer';
-import { selectSelectedCustomer } from '@eternal/customers/api';
+import { CustomersApi } from '@eternal/customers/api';
 
 const bookings: Map<number, Booking[]> = new Map<number, Booking[]>();
 bookings.set(1, [
@@ -40,13 +39,13 @@ export class BookingsEffects {
   constructor(
     private httpClient: HttpClient,
     private actions$: Actions,
-    private store: Store
+    private customersApi: CustomersApi
   ) {}
 
   load$ = createEffect(() =>
     this.actions$.pipe(
       ofType(load),
-      concatLatestFrom(() => this.store.select(selectSelectedCustomer)),
+      concatLatestFrom(() => this.customersApi.selectedCustomer$),
       map(([, customerId]) => customerId),
       filter(Boolean),
       map((customer) => loaded({ bookings: bookings.get(customer.id) || [] }))
