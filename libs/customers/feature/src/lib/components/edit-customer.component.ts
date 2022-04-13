@@ -7,7 +7,7 @@ import { Options } from '@eternal/shared/form';
 import { fromMaster } from '@eternal/shared/master-data';
 import { Store } from '@ngrx/store';
 import { combineLatest, Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { CustomersRepository } from '@eternal/customers/data';
 
 @Component({
@@ -30,15 +30,9 @@ export class EditCustomerComponent {
     private route: ActivatedRoute
   ) {
     const countries$ = this.store.select(fromMaster.selectCountries);
-    const customer$ = this.customersRepository
-      .findById(Number(this.route.snapshot.paramMap.get('id') || ''))
-      .pipe(
-        this.verifyCustomer,
-        map((customer) => {
-          this.customerId = customer.id;
-          return { ...customer };
-        })
-      );
+    const customer$ = this.customersRepository.findById(
+      Number(this.route.snapshot.paramMap.get('id') || '')
+    );
 
     this.data$ = combineLatest({
       countries: countries$,
@@ -52,16 +46,6 @@ export class EditCustomerComponent {
 
   remove(customer: Customer) {
     this.customersRepository.remove({ ...customer, id: this.customerId });
-  }
-
-  private verifyCustomer(customer$: Observable<undefined | Customer>) {
-    function customerGuard(
-      customer: undefined | Customer
-    ): customer is Customer {
-      return customer !== undefined;
-    }
-
-    return customer$.pipe(filter(customerGuard));
   }
 }
 

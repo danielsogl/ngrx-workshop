@@ -4,6 +4,7 @@ import { Customer } from '@eternal/customers/model';
 import { fromCustomers } from './customers.selectors';
 import * as customersActions from './customers.actions';
 import { Observable } from 'rxjs';
+import { filterDefined } from '@eternal/shared/ngrx-utils';
 
 @Injectable({ providedIn: 'root' })
 export class CustomersRepository {
@@ -13,12 +14,12 @@ export class CustomersRepository {
   readonly customersWithSelected$: Observable<
     (Customer & { selected: boolean })[]
   > = this.store.select(fromCustomers.selectCustomersWithSelected);
-  readonly selectedCustomer$: Observable<Customer> = this.store.select(
-    fromCustomers.selectSelectedCustomer
-  );
+  readonly selectedCustomer$: Observable<Customer> = this.store
+    .select(fromCustomers.selectSelectedCustomer)
+    .pipe(filterDefined);
 
   findById(id: number): Observable<Customer> {
-    return this.store.select(fromCustomers.selectById(id)).pipe();
+    return this.store.select(fromCustomers.selectById(id)).pipe(filterDefined);
   }
 
   constructor(private store: Store) {}
