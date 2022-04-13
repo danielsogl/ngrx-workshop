@@ -70,7 +70,8 @@
                   "type:shared:config",
                   "type:shared:master-data",
                   "type:shared:security",
-                  "type:shared:ui-messaging"
+                  "type:shared:ui-messaging",
+                  "type:shared:util"
                 ]
               },
               {
@@ -78,7 +79,9 @@
                 "onlyDependOnLibsWithTags": [
                   "type:model",
                   "type:shared:config",
-                  "type:shared:ui-messaging"
+                  "type:shared:ui-messaging",
+                  "type:shared:ngrx-utils",
+                  "type:shared:util"
                 ]
               },
               {
@@ -86,7 +89,8 @@
                 "onlyDependOnLibsWithTags": [
                   "type:model",
                   "type:shared:form",
-                  "type:shared:ui"
+                  "type:shared:ui",
+                  "type:shared:util"
                 ]
               },
               { "sourceTag": "ui", "bannedExternalImports": ["@ngrx/**"] },
@@ -96,6 +100,10 @@
                   "type:shared:config",
                   "type:shared:ui-messaging"
                 ]
+              },
+              {
+                "sourceTag": "type:shared:ngrx-utils",
+                "onlyDependOnLibsWithTags": ["type:shared:util"]
               }
             ]
           }
