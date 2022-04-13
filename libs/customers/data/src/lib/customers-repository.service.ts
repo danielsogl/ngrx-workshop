@@ -13,11 +13,12 @@ export class CustomersRepository {
   readonly customersWithSelected$: Observable<
     (Customer & { selected: boolean })[]
   > = this.store.select(fromCustomers.selectCustomersWithSelected);
-  readonly selectedCustomer$: Observable<Customer | undefined> =
-    this.store.select(fromCustomers.selectSelectedCustomer);
+  readonly selectedCustomer$: Observable<Customer> = this.store.select(
+    fromCustomers.selectSelectedCustomer
+  );
 
-  findById(id: number): Observable<Customer | undefined> {
-    return this.store.select(fromCustomers.selectById(id));
+  findById(id: number): Observable<Customer> {
+    return this.store.select(fromCustomers.selectById(id)).pipe();
   }
 
   constructor(private store: Store) {}
