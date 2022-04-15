@@ -1,6 +1,7 @@
 import { Holiday } from '@eternal/holidays/model';
 import { createFeature, createReducer, on } from '@ngrx/store';
-import { loaded } from './holidays.actions';
+import { load, loaded } from './holidays.actions';
+import { LoadStatus } from '@eternal/shared/ngrx-utils';
 
 export interface HolidaysState {
   holidays: Holiday[];
@@ -13,8 +14,13 @@ export const holidaysFeature = createFeature({
   name: 'holiday',
   reducer: createReducer(
     initialState,
+    on(load, (state) => ({
+      ...state,
+      loadStatus: 'loading',
+    })),
     on(loaded, (state, { holidays }) => ({
       ...state,
+      loadStatus: 'loaded',
       holidays,
     }))
   ),

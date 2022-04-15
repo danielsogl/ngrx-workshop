@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import * as actions from '../+state/holidays.actions';
 import { fromHolidays } from '../+state/holidays.selectors';
 
 @Component({
@@ -8,12 +7,8 @@ import { fromHolidays } from '../+state/holidays.selectors';
   templateUrl: './holidays.component.html',
   styleUrls: ['./holidays.component.scss'],
 })
-export class HolidaysComponent implements OnInit {
+export class HolidaysComponent {
   holidays$ = this.store.select(fromHolidays.get);
 
   constructor(private store: Store) {}
-
-  ngOnInit(): void {
-    this.store.dispatch(actions.load());
-  }
 }

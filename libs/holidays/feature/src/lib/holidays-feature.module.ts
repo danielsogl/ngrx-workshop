@@ -8,6 +8,7 @@ import { HolidaysComponent } from './holidays/holidays.component';
 import { HolidaysComponentModule } from './holidays/holidays.component.module';
 import { RequestInfoComponent } from './request-info/request-info.component';
 import { RequestInfoComponentModule } from './request-info/request-info.component.module';
+import { HolidayDataGuard } from './holiday-data.guard';
 
 @NgModule({
   imports: [
@@ -16,11 +17,17 @@ import { RequestInfoComponentModule } from './request-info/request-info.componen
     RouterModule.forChild([
       {
         path: '',
-        component: HolidaysComponent,
-      },
-      {
-        path: 'request-info/:holidayId',
-        component: RequestInfoComponent,
+        canActivate: [HolidayDataGuard],
+        children: [
+          {
+            path: '',
+            component: HolidaysComponent,
+          },
+          {
+            path: 'request-info/:holidayId',
+            component: RequestInfoComponent,
+          },
+        ],
       },
     ]),
     StoreModule.forFeature(holidaysFeature),
