@@ -30,8 +30,12 @@ export class CustomersRepository {
 
   constructor(private store: Store) {}
 
-  load(page: number): void {
-    this.store.dispatch(customersActions.load({ page }));
+  init(): void {
+    this.store.dispatch(customersActions.init());
+  }
+
+  get(page: number): void {
+    this.store.dispatch(customersActions.get({ page }));
   }
 
   add(customer: Customer): void {

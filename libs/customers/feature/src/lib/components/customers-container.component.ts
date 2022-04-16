@@ -9,11 +9,12 @@ import { CustomersRepository } from '@eternal/customers/data';
 import { map } from 'rxjs/operators';
 
 @Component({
-  template: ` <eternal-customers
+  template: `<eternal-customers
     *ngIf="viewModel$ | async as viewModel"
     [viewModel]="viewModel"
     (setSelected)="setSelected($event)"
     (setUnselected)="setUnselected()"
+    (switchPage)="switchPage($event)"
   ></eternal-customers>`,
 })
 export class CustomersContainerComponent {
@@ -34,6 +35,10 @@ export class CustomersContainerComponent {
 
   setUnselected() {
     this.customersRepository.unselect();
+  }
+
+  switchPage(page: number) {
+    this.customersRepository.get(page + 1);
   }
 }
 
