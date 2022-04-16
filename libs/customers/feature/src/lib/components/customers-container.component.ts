@@ -1,18 +1,30 @@
 import { CommonModule } from '@angular/common';
 import { Component, NgModule } from '@angular/core';
-import { CustomersComponentModule } from '@eternal/customers/ui';
+import {
+  CustomersComponentModule,
+  CustomersViewModel,
+} from '@eternal/customers/ui';
+import { Observable } from 'rxjs';
 import { CustomersRepository } from '@eternal/customers/data';
+import { map } from 'rxjs/operators';
 
 @Component({
   template: ` <eternal-customers
-    *ngIf="customers$ | async as customers"
-    [customers]="customers"
+    *ngIf="viewModel$ | async as viewModel"
+    [viewModel]="viewModel"
     (setSelected)="setSelected($event)"
     (setUnselected)="setUnselected()"
   ></eternal-customers>`,
 })
 export class CustomersContainerComponent {
-  customers$ = this.customersRepository.customersWithSelected$;
+  viewModel$: Observable<CustomersViewModel> =
+    this.customersRepository.pagedCustomers$.pipe(
+      map(({ customers, page, total }) => ({
+        customers,
+        pageIndex: page - 1,
+        length: total,
+      }))
+    );
 
   constructor(private customersRepository: CustomersRepository) {}
 

@@ -12,9 +12,11 @@ export class CustomersRepository {
     .select(fromCustomers.selectCustomers)
     .pipe(deepClone);
 
-  readonly customersWithSelected$: Observable<
-    (Customer & { selected: boolean })[]
-  > = this.store.select(fromCustomers.selectCustomersWithSelected);
+  readonly pagedCustomers$: Observable<{
+    customers: (Customer & { selected: boolean })[];
+    page: number;
+    total: number;
+  }> = this.store.select(fromCustomers.selectPagedCustomers);
 
   readonly selectedCustomer$: Observable<Customer> = this.store
     .select(fromCustomers.selectSelectedCustomer)
@@ -28,8 +30,8 @@ export class CustomersRepository {
 
   constructor(private store: Store) {}
 
-  load(): void {
-    this.store.dispatch(customersActions.load());
+  load(page: number): void {
+    this.store.dispatch(customersActions.load({ page }));
   }
 
   add(customer: Customer): void {
