@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, NgModule } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Customer } from '@eternal/customers/model';
 import { CustomerComponentModule } from '@eternal/customers/ui';
 import { Options } from '@eternal/shared/form';
@@ -27,12 +27,12 @@ export class EditCustomerComponent {
   constructor(
     private store: Store,
     private customersRepository: CustomersRepository,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     const countries$ = this.store.select(fromMaster.selectCountries);
-    const customer$ = this.customersRepository.findById(
-      Number(this.route.snapshot.paramMap.get('id') || '')
-    );
+    this.customerId = Number(this.route.snapshot.paramMap.get('id') || '');
+    const customer$ = this.customersRepository.findById(this.customerId);
 
     this.data$ = combineLatest({
       countries: countries$,
@@ -41,7 +41,14 @@ export class EditCustomerComponent {
   }
 
   submit(customer: Customer) {
-    this.customersRepository.update({ ...customer, id: this.customerId });
+    const urlTree = this.router.createUrlTree(['..'], {
+      relativeTo: this.route,
+    });
+    this.customersRepository.update(
+      { ...customer, id: this.customerId },
+      urlTree.toString(),
+      'Customer has been updated'
+    );
   }
 
   remove(customer: Customer) {

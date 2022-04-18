@@ -47,8 +47,10 @@ export class CustomersRepository {
     this.store.dispatch(customersActions.add({ customer }));
   }
 
-  update(customer: Customer): void {
-    this.store.dispatch(customersActions.update({ customer }));
+  update(customer: Customer, forward: string, message: string): void {
+    this.store.dispatch(
+      customersActions.update({ customer, forward, message })
+    );
   }
 
   remove(customer: Customer): void {
