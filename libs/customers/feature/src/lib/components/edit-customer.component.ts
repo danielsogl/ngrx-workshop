@@ -16,6 +16,7 @@ import { CustomersRepository } from '@eternal/customers/data';
     *ngIf="data$ | async as data"
     [customer]="data.customer"
     [countries]="data.countries"
+    [disableSubmitButton]="disableSubmitButton"
     (save)="this.submit($event)"
     (remove)="this.remove($event)"
   ></eternal-customer>`,
@@ -23,6 +24,7 @@ import { CustomersRepository } from '@eternal/customers/data';
 export class EditCustomerComponent {
   data$: Observable<{ customer: Customer; countries: Options }>;
   customerId = 0;
+  disableSubmitButton = false;
 
   constructor(
     private store: Store,
@@ -44,10 +46,12 @@ export class EditCustomerComponent {
     const urlTree = this.router.createUrlTree(['..'], {
       relativeTo: this.route,
     });
+    this.disableSubmitButton = true;
     this.customersRepository.update(
       { ...customer, id: this.customerId },
       urlTree.toString(),
-      'Customer has been updated'
+      'Customer has been updated',
+      () => (this.disableSubmitButton = true)
     );
   }
 
