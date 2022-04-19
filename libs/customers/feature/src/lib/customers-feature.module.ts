@@ -41,6 +41,13 @@ import { CustomersDataModule } from '@eternal/customers/data';
             data: { mode: 'new' },
           },
           {
+            path: 'bookings',
+            loadChildren: () =>
+              import('@eternal/customers-bookings').then(
+                (m) => m.CustomersBookingsModule
+              ),
+          },
+          {
             path: ':id',
             component: EditCustomerComponent,
             data: { mode: 'edit' },
