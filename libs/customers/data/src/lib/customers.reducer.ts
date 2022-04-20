@@ -1,5 +1,5 @@
 import { Customer } from '@eternal/customers/model';
-import { createFeature, createReducer, on } from '@ngrx/store';
+import { createFeature, createReducer } from '@ngrx/store';
 import {
   init,
   load,
@@ -8,6 +8,7 @@ import {
   select,
   unselect,
 } from './customers.actions';
+import { immerOn } from 'ngrx-immer/store';
 
 export interface CustomersState {
   customers: Customer[];
@@ -31,34 +32,30 @@ export const customersFeature = createFeature({
   name: 'customers',
   reducer: createReducer<CustomersState>(
     initialState,
-    on(init, (state) => {
+    immerOn(init, (state) => {
       if (state.hasError) {
-        return initialState;
+        Object.assign(state, initialState);
       }
-      return state;
     }),
-    on(load, (state, { page }) => ({
-      ...state,
-      page,
-    })),
-    on(loadSuccess, (state, { customers, total }) => ({
-      ...state,
-      customers,
-      total,
-      isLoaded: true,
-      hasError: false,
-    })),
-    on(loadFailure, (state) => ({
-      ...state,
-      hasError: true,
-    })),
-    on(select, (state, { id }) => ({
-      ...state,
-      selectedId: id,
-    })),
-    on(unselect, (state) => ({
-      ...state,
-      selectedId: undefined,
-    }))
+    immerOn(load, (state, { page }) => {
+      state.page = page;
+    }),
+    immerOn(loadSuccess, (state, { customers, total }) => {
+      Object.assign(state, {
+        customers,
+        total,
+        isLoaded: true,
+        hasError: false,
+      });
+    }),
+    immerOn(loadFailure, (state) => {
+      state.hasError = true;
+    }),
+    immerOn(select, (state, { id }) => {
+      state.selectedId = id;
+    }),
+    immerOn(unselect, (state) => {
+      state.selectedId = undefined;
+    })
   ),
 });
