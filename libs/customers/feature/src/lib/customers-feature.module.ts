@@ -43,6 +43,7 @@ import { CustomersDataModule } from '@eternal/customers/data';
           {
             path: 'bookings',
             loadChildren: () =>
+              // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
               import('@eternal/customers-bookings').then(
                 (m) => m.CustomersBookingsModule
               ),
