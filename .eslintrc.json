@@ -15,6 +15,7 @@
               {
                 "sourceTag": "type:app",
                 "onlyDependOnLibsWithTags": [
+                  "domain:core",
                   "type:feature",
                   "type:shared:config",
                   "type:shared:http",
@@ -95,6 +96,10 @@
                 ]
               },
               { "sourceTag": "ui", "bannedExternalImports": ["@ngrx/**"] },
+              {
+                "sourceTag": "domain:core",
+                "onlyDependsOnLibsWithTags": "domain:shared"
+              },
               {
                 "sourceTag": "type:shared:http",
                 "onlyDependOnLibsWithTags": [

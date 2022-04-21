@@ -7,8 +7,6 @@ import { syncLocalStorage } from './sync-local-storage.action';
 
 @Injectable()
 export class LocalStorageEffects {
-  constructor() {}
-
   localStorageChange$ = createEffect(() =>
     fromEvent<StorageEvent>(window, 'storage').pipe(
       pluck('key'),
