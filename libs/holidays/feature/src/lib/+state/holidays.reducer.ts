@@ -1,8 +1,13 @@
 import { Holiday } from '@eternal/holidays/model';
-import { createFeature, createReducer, on } from '@ngrx/store';
+import { createFeature, createReducer } from '@ngrx/store';
 import { LoadStatus } from '@eternal/shared/ngrx-utils';
 import { immerOn } from 'ngrx-immer/store';
-import { addFavourite, load, loaded, removeFavourite } from './holidays.actions';
+import {
+  addFavourite,
+  load,
+  loaded,
+  removeFavourite,
+} from './holidays.actions';
 
 export interface HolidaysState {
   holidays: Holiday[];
@@ -10,7 +15,11 @@ export interface HolidaysState {
   favouriteIds: number[];
 }
 
-const initialState: HolidaysState = { holidays: [], favouriteIds: [], loadStatus: 'not loaded' };
+const initialState: HolidaysState = {
+  holidays: [],
+  favouriteIds: [],
+  loadStatus: 'not loaded',
+};
 
 export const holidaysFeature = createFeature({
   name: 'holidays',
@@ -23,19 +32,17 @@ export const holidaysFeature = createFeature({
       state.loadStatus = 'loaded';
       state.holidays = holidays;
     }),
-    on(addFavourite, (state, { id }) => {
+    immerOn(addFavourite, (state, { id }) => {
       if (state.favouriteIds.includes(id)) {
-        return state;
+        return;
       }
 
-      return { ...state, favouriteIds: [...state.favouriteIds, id] };
+      state.favouriteIds.push(id);
     }),
-    on(removeFavourite, (state, { id }) => ({
-      ...state,
-      favouriteIds: state.favouriteIds.filter(
+    immerOn(removeFavourite, (state, { id }) => {
+      state.favouriteIds = state.favouriteIds.filter(
         (favouriteId) => favouriteId !== id
-      ),
-    }))
-
+      );
+    })
   ),
 });
