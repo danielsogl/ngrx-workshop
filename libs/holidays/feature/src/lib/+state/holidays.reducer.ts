@@ -1,18 +1,19 @@
 import { Holiday } from '@eternal/holidays/model';
 import { createFeature, createReducer, on } from '@ngrx/store';
-import { load, loaded } from './holidays.actions';
 import { LoadStatus } from '@eternal/shared/ngrx-utils';
+import { addFavourite, load, loaded, removeFavourite } from './holidays.actions';
 
 export interface HolidaysState {
   holidays: Holiday[];
   loadStatus: LoadStatus;
+  favouriteIds: number[];
 }
 
-const initialState: HolidaysState = { holidays: [], loadStatus: 'not loaded' };
+const initialState: HolidaysState = { holidays: [], favouriteIds: [], loadStatus: 'not loaded' };
 
 export const holidaysFeature = createFeature({
   name: 'holidays',
-  reducer: createReducer(
+  reducer: createReducer<HolidaysState>(
     initialState,
     on(load, (state) => ({
       ...state,
@@ -22,6 +23,19 @@ export const holidaysFeature = createFeature({
       ...state,
       loadStatus: 'loaded',
       holidays,
+    })),
+    on(addFavourite, (state, { id }) => {
+      if (state.favouriteIds.includes(id)) {
+        return state;
+      }
+
+      return { ...state, favouriteIds: [...state.favouriteIds, id] };
+    }),
+    on(removeFavourite, (state, { id }) => ({
+      ...state,
+      favouriteIds: state.favouriteIds.filter(
+        (favouriteId) => favouriteId !== id
+      ),
     }))
   ),
 });
