@@ -49,3 +49,6 @@ export const select = createAction(
 );
 
 export const unselect = createAction('[Customers] Unselect');
+
+export const undo = createAction('[Customers] Undo');
+export const redo = createAction('[Customers] Redo');
