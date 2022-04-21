@@ -11,7 +11,7 @@ export interface HolidaysState {
 const initialState: HolidaysState = { holidays: [], loadStatus: 'not loaded' };
 
 export const holidaysFeature = createFeature({
-  name: 'holiday',
+  name: 'holidays',
   reducer: createReducer(
     initialState,
     on(load, (state) => ({
