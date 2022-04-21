@@ -15,6 +15,12 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@eternal/core/local-storage-state": [
+        "libs/core/local-storage-state/src/index.ts"
+      ],
+      "@eternal/core/locale-storage-state": [
+        "libs/core/locale-storage-state/src/index.ts"
+      ],
       "@eternal/customers-bookings": ["libs/customers/bookings/src/index.ts"],
       "@eternal/customers/api": ["libs/customers/api/src/index.ts"],
       "@eternal/customers/data": ["libs/customers/data/src/index.ts"],
