@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Holiday } from '@eternal/holidays/model';
 import { Configuration } from '@eternal/shared/config';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
-import { map, switchMap } from 'rxjs/operators';
+import { concatMap, map, switchMap } from 'rxjs/operators';
 import * as actions from './holidays.actions';
 import { load } from './holidays.actions';
 import { Store } from '@ngrx/store';
@@ -12,6 +12,8 @@ import { filter } from 'rxjs';
 
 @Injectable()
 export class HolidaysEffects {
+  #baseUrl = '/holiday';
+
   get$ = createEffect(() =>
     this.actions$.pipe(
       ofType(actions.get),
@@ -26,7 +28,7 @@ export class HolidaysEffects {
   load$ = createEffect(() =>
     this.actions$.pipe(
       ofType(actions.load),
-      switchMap(() => this.httpClient.get<Holiday[]>('/holiday')),
+      switchMap(() => this.httpClient.get<Holiday[]>(this.#baseUrl)),
       map((holidays) =>
         holidays.map((holiday) => ({
           ...holiday,
@@ -34,6 +36,28 @@ export class HolidaysEffects {
         }))
       ),
       map((holidays) => actions.loaded({ holidays }))
+    )
+  );
+
+  addFavourites$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actions.addFavourite),
+      concatMap(({ id }) =>
+        this.httpClient
+          .post<void>(`${this.#baseUrl}/favourite/${id}`, {})
+          .pipe(map(() => actions.favouriteAdded({ id })))
+      )
+    )
+  );
+
+  removeFavourite$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actions.removeFavourite),
+      concatMap(({ id }) =>
+        this.httpClient
+          .delete(`${this.#baseUrl}/favourite/${id}`)
+          .pipe(map(() => actions.favouriteRemoved({ id })))
+      )
     )
   );
 
