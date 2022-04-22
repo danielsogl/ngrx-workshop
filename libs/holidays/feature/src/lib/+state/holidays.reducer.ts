@@ -1,34 +1,61 @@
 import { Holiday } from '@eternal/holidays/model';
-import { createFeature, createReducer, on } from '@ngrx/store';
-import { favouriteAdded, favouriteRemoved, loaded } from './holidays.actions';
+import { createFeature, on } from '@ngrx/store';
+import { LoadStatus } from '@eternal/shared/ngrx-utils';
+import { immerOn } from 'ngrx-immer/store';
+import {
+  addFavourite,
+  addFavouriteUndo,
+  load,
+  loaded,
+  redo,
+  removeFavourite,
+  removeFavouriteUndo,
+  undo,
+} from './holidays.actions';
+import { initialUndoRedoState, undoRedo, UndoRedoState } from 'ngrx-wieder';
 
-export interface HolidaysState {
+export interface HolidaysState extends UndoRedoState {
   holidays: Holiday[];
+  loadStatus: LoadStatus;
   favouriteIds: number[];
 }
 
-const initialState: HolidaysState = { holidays: [], favouriteIds: [] };
+const initialState: HolidaysState = {
+  holidays: [],
+  favouriteIds: [],
+  loadStatus: 'not loaded',
+  ...initialUndoRedoState,
+};
+
+const { createUndoRedoReducer } = undoRedo({
+  undoActionType: undo.type,
+  redoActionType: redo.type,
+  maxBufferSize: 2,
+});
 
 export const holidaysFeature = createFeature({
   name: 'holidays',
-  reducer: createReducer<HolidaysState>(
+  reducer: createUndoRedoReducer<HolidaysState>(
     initialState,
-    on(loaded, (state, { holidays }) => ({
+    on(load, (state) => ({
       ...state,
-      holidays,
+      loadStatus: 'loading',
     })),
-    on(favouriteAdded, (state, { id }) => {
+    immerOn(loaded, (state, { holidays }) => {
+      state.loadStatus = 'loaded';
+      state.holidays = holidays;
+    }),
+    immerOn(addFavourite, removeFavouriteUndo, (state, { id }) => {
       if (state.favouriteIds.includes(id)) {
-        return state;
+        return;
       }
 
-      return { ...state, favouriteIds: [...state.favouriteIds, id] };
+      state.favouriteIds.push(id);
     }),
-    on(favouriteRemoved, (state, { id }) => ({
-      ...state,
-      favouriteIds: state.favouriteIds.filter(
+    immerOn(removeFavourite, addFavouriteUndo, (state, { id }) => {
+      state.favouriteIds = state.favouriteIds.filter(
         (favouriteId) => favouriteId !== id
-      ),
-    }))
+      );
+    })
   ),
 });

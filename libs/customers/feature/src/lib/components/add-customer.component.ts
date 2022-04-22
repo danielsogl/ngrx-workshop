@@ -4,9 +4,9 @@ import { Customer } from '@eternal/customers/model';
 import { CustomerComponentModule } from '@eternal/customers/ui';
 import { Options } from '@eternal/shared/form';
 import { fromMaster } from '@eternal/shared/master-data';
-import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { add } from '../+state/customers.actions';
+import { CustomersRepository } from '@eternal/customers/data';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'eternal-add-customer',
@@ -28,12 +28,15 @@ export class AddCustomerComponent {
   };
   countries$: Observable<Options>;
 
-  constructor(private store: Store) {
+  constructor(
+    private store: Store,
+    private customersRepository: CustomersRepository
+  ) {
     this.countries$ = this.store.select(fromMaster.selectCountries);
   }
 
   submit(customer: Customer) {
-    this.store.dispatch(add({ customer: { ...customer, id: 0 } }));
+    this.customersRepository.add(customer);
   }
 }
 

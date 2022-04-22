@@ -6,12 +6,13 @@ import {
 } from '@angular/common/http/testing';
 import { HolidaysComponent } from './holidays.component';
 import { HolidaysComponentModule } from './holidays.component.module';
-import { StoreModule } from '@ngrx/store';
+import { Store, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { holidaysFeature } from '../+state/holidays.reducer';
 import { HolidaysEffects } from '../+state/holidays.effects';
 import { Configuration } from '@eternal/shared/config';
 import { createHolidays } from '@eternal/holidays/model';
+import { get } from '../+state/holidays.actions';
 
 describe('Request Info Component', () => {
   const setup = async () =>
@@ -42,6 +43,7 @@ describe('Request Info Component', () => {
 
   it('should show holiday cards', fakeAsync(async () => {
     await setup();
+    TestBed.inject(Store).dispatch(get());
     const controller = TestBed.inject(HttpTestingController);
     const holidays = createHolidays({ title: 'Vienna' }, { title: 'London' });
     controller.expectOne((req) => !!req.url.match(/holiday/)).flush(holidays);

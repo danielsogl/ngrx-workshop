@@ -4,39 +4,41 @@ import {
   CustomersComponentModule,
   CustomersViewModel,
 } from '@eternal/customers/ui';
-import { Store } from '@ngrx/store';
-import { select, unselect } from '../+state/customers.actions';
-import { fromCustomers } from '../+state/customers.selectors';
-import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { CustomersRepository } from '@eternal/customers/data';
+import { map } from 'rxjs/operators';
 
 @Component({
-  template: ` <eternal-customers
+  template: `<eternal-customers
     *ngIf="viewModel$ | async as viewModel"
     [viewModel]="viewModel"
     (setSelected)="setSelected($event)"
     (setUnselected)="setUnselected()"
+    (switchPage)="switchPage($event)"
   ></eternal-customers>`,
 })
 export class CustomersContainerComponent {
-  viewModel$: Observable<CustomersViewModel> = this.store
-    .select(fromCustomers.selectPagedCustomers)
-    .pipe(
-      map((pagedCustomers) => ({
-        customers: pagedCustomers.customers,
-        pageIndex: pagedCustomers.page - 1,
-        length: pagedCustomers.total,
+  viewModel$: Observable<CustomersViewModel> =
+    this.customersRepository.pagedCustomers$.pipe(
+      map(({ customers, page, total }) => ({
+        customers,
+        pageIndex: page - 1,
+        length: total,
       }))
     );
 
-  constructor(private store: Store) {}
+  constructor(private customersRepository: CustomersRepository) {}
 
   setSelected(id: number) {
-    this.store.dispatch(select({ id }));
+    this.customersRepository.select(id);
   }
 
   setUnselected() {
-    this.store.dispatch(unselect());
+    this.customersRepository.unselect();
+  }
+
+  switchPage(page: number) {
+    this.customersRepository.get(page + 1);
   }
 }
 

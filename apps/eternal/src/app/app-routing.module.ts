@@ -27,11 +27,6 @@ import { HomeComponent } from './home.component';
               ),
           },
           {
-            path: 'bookings',
-            loadChildren: () =>
-              import('@eternal/bookings').then((m) => m.BookingsModule),
-          },
-          {
             path: 'holidays',
             loadChildren: () =>
               import('@eternal/holidays/feature').then(

@@ -15,6 +15,7 @@
               {
                 "sourceTag": "type:app",
                 "onlyDependOnLibsWithTags": [
+                  "domain:core",
                   "type:feature",
                   "type:shared:config",
                   "type:shared:http",
@@ -25,7 +26,11 @@
               },
               {
                 "sourceTag": "domain:bookings",
-                "onlyDependOnLibsWithTags": ["domain:bookings", "domain:shared"]
+                "onlyDependOnLibsWithTags": [
+                  "domain:bookings",
+                  "domain:customers:api",
+                  "domain:shared"
+                ]
               },
               {
                 "sourceTag": "domain:customers",
@@ -33,6 +38,10 @@
                   "domain:customers",
                   "domain:shared"
                 ]
+              },
+              {
+                "sourceTag": "domain:customers:api",
+                "onlyDependOnLibWithTags": ["domain:customers"]
               },
               {
                 "sourceTag": "domain:diary",
@@ -43,8 +52,18 @@
                 "onlyDependOnLibsWithTags": ["domain:holidays", "domain:shared"]
               },
               {
+                "sourceTag": "type:api",
+                "onlyDependOnLibWithTags": [
+                  "type:feature",
+                  "type:data",
+                  "type:ui",
+                  "type:model"
+                ]
+              },
+              {
                 "sourceTag": "type:feature",
                 "onlyDependOnLibsWithTags": [
+                  "type:api",
                   "type:data",
                   "type:ui",
                   "type:model",
@@ -77,6 +96,10 @@
                 ]
               },
               { "sourceTag": "ui", "bannedExternalImports": ["@ngrx/**"] },
+              {
+                "sourceTag": "domain:core",
+                "onlyDependsOnLibsWithTags": "domain:shared"
+              },
               {
                 "sourceTag": "type:shared:http",
                 "onlyDependOnLibsWithTags": [
