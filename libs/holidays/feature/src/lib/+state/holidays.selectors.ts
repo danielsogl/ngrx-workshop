@@ -1,9 +1,14 @@
-import { holidaysFeature } from './holidays.reducer';
+import { adapter, holidaysFeature } from './holidays.reducer';
 import { createSelector } from '@ngrx/store';
 import { createHistorySelectors } from 'ngrx-wieder';
 
+const selectHolidays = createSelector(
+  holidaysFeature.selectHolidaysState,
+  adapter.getSelectors().selectAll
+);
+
 const selectHolidaysWithFavourite = createSelector(
-  holidaysFeature.selectHolidays,
+  selectHolidays,
   holidaysFeature.selectFavouriteIds,
   (holidays, favouriteIds) =>
     holidays.map((holiday) => ({
@@ -17,7 +22,7 @@ const { selectCanRedo, selectCanUndo } = createHistorySelectors(
 );
 
 export const fromHolidays = {
-  get: holidaysFeature.selectHolidays,
+  get: selectHolidays,
   selectHolidaysWithFavourite,
   selectCanRedo,
   selectCanUndo,

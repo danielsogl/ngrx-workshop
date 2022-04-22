@@ -13,19 +13,24 @@ import {
   undo,
 } from './holidays.actions';
 import { initialUndoRedoState, undoRedo, UndoRedoState } from 'ngrx-wieder';
+import { createEntityAdapter, EntityState } from '@ngrx/entity';
 
-export interface HolidaysState extends UndoRedoState {
-  holidays: Holiday[];
+export const adapter = createEntityAdapter<Holiday>({
+  selectId: (holiday) => holiday.id,
+  sortComparer: (holiday1, holiday2) =>
+    holiday1.title.localeCompare(holiday2.title),
+});
+
+export interface HolidaysState extends UndoRedoState, EntityState<Holiday> {
   loadStatus: LoadStatus;
   favouriteIds: number[];
 }
 
-const initialState: HolidaysState = {
-  holidays: [],
+const initialState: HolidaysState = adapter.getInitialState({
   favouriteIds: [],
   loadStatus: 'not loaded',
   ...initialUndoRedoState,
-};
+});
 
 const { createUndoRedoReducer } = undoRedo({
   undoActionType: undo.type,
@@ -41,9 +46,8 @@ export const holidaysFeature = createFeature({
       ...state,
       loadStatus: 'loading',
     })),
-    immerOn(loaded, (state, { holidays }) => {
-      state.loadStatus = 'loaded';
-      state.holidays = holidays;
+    on(loaded, (state, { holidays }) => {
+      return { ...adapter.setAll(holidays, state), loadStatus: 'loaded' };
     }),
     immerOn(addFavourite, removeFavouriteUndo, (state, { id }) => {
       if (state.favouriteIds.includes(id)) {
