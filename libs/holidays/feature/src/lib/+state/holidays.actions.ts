@@ -16,3 +16,6 @@ export const removeFavourite = createAction(
   '[Holidays] Remove Favourite',
   props<{ id: number }>()
 );
+
+export const undo = createAction('[Holidays] Undo');
+export const redo = createAction('[Holidays] Redo');

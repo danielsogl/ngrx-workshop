@@ -3,10 +3,28 @@ import { Store } from '@ngrx/store';
 import * as actions from '../+state/holidays.actions';
 import { fromHolidays } from '../+state/holidays.selectors';
 import { Holiday } from '@eternal/holidays/model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'eternal-holidays',
   template: `<h2>Choose among our Holidays</h2>
+    <button
+      *ngrxLet="canUndo$ as undo"
+      mat-raised-button
+      class="mr-4"
+      (click)="handleUndo()"
+      [disabled]="!undo"
+    >
+      <mat-icon>undo</mat-icon>
+    </button>
+    <button
+      *ngrxLet="canRedo$ as redo"
+      mat-raised-button
+      (click)="handleRedo()"
+      [disabled]="!redo"
+    >
+      <mat-icon>redo</mat-icon>
+    </button>
     <div class="flex flex-wrap justify-evenly">
       <eternal-holiday-card
         *ngFor="let holiday of holidays$ | async; trackBy: byId"
@@ -19,6 +37,12 @@ import { Holiday } from '@eternal/holidays/model';
 })
 export class HolidaysComponent {
   holidays$ = this.store.select(fromHolidays.selectHolidaysWithFavourite);
+  canUndo$: Observable<boolean> = this.store.select(
+    fromHolidays.selectCanUndo()
+  );
+  canRedo$: Observable<boolean> = this.store.select(
+    fromHolidays.selectCanRedo()
+  );
 
   constructor(private store: Store) {}
 
@@ -34,4 +58,11 @@ export class HolidaysComponent {
     return holiday.id;
   }
 
+  handleUndo() {
+    this.store.dispatch(actions.undo());
+  }
+
+  handleRedo() {
+    this.store.dispatch(actions.redo());
+  }
 }

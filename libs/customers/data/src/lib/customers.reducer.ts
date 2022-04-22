@@ -33,7 +33,7 @@ export const initialState: CustomersState = {
 };
 
 const { createUndoRedoReducer } = undoRedo({
-  maxBufferSize: 15,
+  maxBufferSize: 2,
   allowedActionTypes: [select.type, unselect.type],
   undoActionType: undo.type,
   redoActionType: redo.type,
@@ -45,19 +45,14 @@ export const customersFeature = createFeature({
     initialState,
     immerOn(init, (state) => {
       if (state.hasError) {
-        Object.assign(state, initialState);
+        state = { ...initialState };
       }
     }),
     immerOn(load, (state, { page }) => {
       state.page = page;
     }),
     immerOn(loadSuccess, (state, { customers, total }) => {
-      Object.assign(state, {
-        customers,
-        total,
-        isLoaded: true,
-        hasError: false,
-      });
+      state = { ...state, customers, total, isLoaded: true, hasError: false };
     }),
     immerOn(loadFailure, (state) => {
       state.hasError = true;
