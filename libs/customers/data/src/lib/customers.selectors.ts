@@ -1,9 +1,13 @@
 import { Customer } from '@eternal/customers/model';
 import { createSelector } from '@ngrx/store';
-import { customersFeature } from './customers.reducer';
+import { adapter, customersFeature } from './customers.reducer';
 import { createHistorySelectors } from 'ngrx-wieder';
 
-const { selectCustomers, selectSelectedId } = customersFeature;
+const { selectSelectedId } = customersFeature;
+const selectCustomers = createSelector(
+  customersFeature.selectCustomersState,
+  adapter.getSelectors().selectAll
+);
 
 const selectById = (id: number) =>
   createSelector(selectCustomers, (state: Customer[]): Customer | undefined =>

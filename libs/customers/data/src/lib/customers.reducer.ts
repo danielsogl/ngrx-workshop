@@ -1,5 +1,5 @@
 import { Customer } from '@eternal/customers/model';
-import { createFeature } from '@ngrx/store';
+import { createFeature, on } from '@ngrx/store';
 import {
   init,
   load,
@@ -12,9 +12,14 @@ import {
 } from './customers.actions';
 import { immerOn } from 'ngrx-immer/store';
 import { initialUndoRedoState, undoRedo, UndoRedoState } from 'ngrx-wieder';
+import { createEntityAdapter, EntityState } from '@ngrx/entity';
 
-export interface CustomersState extends UndoRedoState {
-  customers: Customer[];
+export const adapter = createEntityAdapter<Customer>({
+  sortComparer: (customer1, customer2) =>
+    customer1.name.localeCompare(customer2.name),
+});
+
+export interface CustomersState extends UndoRedoState, EntityState<Customer> {
   page: number;
   total: number;
   selectedId: number | undefined;
@@ -22,15 +27,14 @@ export interface CustomersState extends UndoRedoState {
   hasError: boolean;
 }
 
-export const initialState: CustomersState = {
-  customers: [],
+export const initialState: CustomersState = adapter.getInitialState({
   page: 0,
   total: 0,
   selectedId: undefined,
   isLoaded: false,
   hasError: false,
   ...initialUndoRedoState,
-};
+});
 
 const { createUndoRedoReducer } = undoRedo({
   maxBufferSize: 2,
@@ -51,9 +55,12 @@ export const customersFeature = createFeature({
     immerOn(load, (state, { page }) => {
       state.page = page;
     }),
-    immerOn(loadSuccess, (state, { customers, total }) => {
-      state = { ...state, customers, total, isLoaded: true, hasError: false };
-    }),
+    on(loadSuccess, (state, { customers, total }) => ({
+      ...adapter.setAll(customers, state),
+      total,
+      isLoaded: true,
+      hasError: false,
+    })),
     immerOn(loadFailure, (state) => {
       state.hasError = true;
     }),
