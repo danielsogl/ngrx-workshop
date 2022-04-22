@@ -3,14 +3,11 @@ import { createFeature, on } from '@ngrx/store';
 import { LoadStatus } from '@eternal/shared/ngrx-utils';
 import { immerOn } from 'ngrx-immer/store';
 import {
-  addFavourite,
-  load,
-  loaded,
   redo,
-  removeFavourite,
   undo,
 } from './holidays.actions';
 import { initialUndoRedoState, undoRedo, UndoRedoState } from 'ngrx-wieder';
+import { favouriteAdded, favouriteRemoved, load, loaded } from './holidays.actions';
 
 export interface HolidaysState extends UndoRedoState {
   holidays: Holiday[];
@@ -43,14 +40,14 @@ export const holidaysFeature = createFeature({
       state.loadStatus = 'loaded';
       state.holidays = holidays;
     }),
-    immerOn(addFavourite, (state, { id }) => {
+    immerOn(favouriteAdded, (state, { id }) => {
       if (state.favouriteIds.includes(id)) {
         return;
       }
 
       state.favouriteIds.push(id);
     }),
-    immerOn(removeFavourite, (state, { id }) => {
+    immerOn(favouriteRemoved, (state, { id }) => {
       state.favouriteIds = state.favouriteIds.filter(
         (favouriteId) => favouriteId !== id
       );
