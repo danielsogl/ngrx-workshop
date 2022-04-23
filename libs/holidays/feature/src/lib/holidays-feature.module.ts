@@ -9,6 +9,7 @@ import { HolidaysComponentModule } from './holidays/holidays.component.module';
 import { RequestInfoComponent } from './request-info/request-info.component';
 import { RequestInfoComponentModule } from './request-info/request-info.component.module';
 import { HolidayDataGuard } from './holiday-data.guard';
+import { EntityDefinitionService } from '@ngrx/data';
 
 @NgModule({
   imports: [
@@ -34,4 +35,10 @@ import { HolidayDataGuard } from './holiday-data.guard';
     EffectsModule.forFeature([HolidaysEffects]),
   ],
 })
-export class HolidaysFeatureModule {}
+export class HolidaysFeatureModule {
+  constructor(entityDefinitionService: EntityDefinitionService) {
+    entityDefinitionService.registerMetadataMap({
+      Holiday: {},
+    });
+  }
+}
