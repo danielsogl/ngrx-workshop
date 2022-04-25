@@ -1,6 +1,6 @@
-import { selectSelectedCustomer } from '@eternal/customers/api';
 import { createSelector } from '@ngrx/store';
 import { bookingsFeature } from './bookings.reducer';
+import { selectSelectedCustomer } from '@eternal/customers/api';
 
 const { selectBookings, selectLoaded } = bookingsFeature;
 

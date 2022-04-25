@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { selectSelectedCustomer } from '@eternal/customers/api';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { filter, map } from 'rxjs';
 import { load, loaded } from './bookings.actions';
 import { Booking } from './bookings.reducer';
+import { selectSelectedCustomer } from '@eternal/customers/api';
 
 const bookings: Map<number, Booking[]> = new Map<number, Booking[]>();
 bookings.set(1, [

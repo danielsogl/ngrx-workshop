@@ -32,15 +32,15 @@
                 ]
               },
               {
-                "sourceTag": "domain:customers:api",
-                "onlyDependOnLibsWithTags": ["domain:customers"]
-              },
-              {
                 "sourceTag": "domain:customers",
                 "onlyDependOnLibsWithTags": [
                   "domain:customers",
                   "domain:shared"
                 ]
+              },
+              {
+                "sourceTag": "domain:customers:api",
+                "onlyDependOnLibsWithTags": ["domain:customers"]
               },
               {
                 "sourceTag": "domain:diary",
