@@ -4,6 +4,9 @@ import * as actions from '../+state/holidays.actions';
 import { fromHolidays } from '../+state/holidays.selectors';
 import { Holiday } from '@eternal/holidays/model';
 import { Observable } from 'rxjs';
+import { HolidaysEntityCollectionService } from '../holidays-entity-collection.service';
+import { map } from 'rxjs/operators';
+import { Configuration } from '@eternal/shared/config';
 
 @Component({
   selector: 'eternal-holidays',
@@ -36,7 +39,15 @@ import { Observable } from 'rxjs';
     </div> `,
 })
 export class HolidaysComponent {
-  holidays$ = this.store.select(fromHolidays.selectHolidaysWithFavourite);
+  holidays$ = this.holidaysRepo.entities$.pipe(
+    map((holidays) =>
+      holidays.map((holiday) => ({
+        ...holiday,
+        imageUrl: `${this.config.baseUrl}${holiday.imageUrl}`,
+        isFavourite: true,
+      }))
+    )
+  );
   canUndo$: Observable<boolean> = this.store.select(
     fromHolidays.selectCanUndo()
   );
@@ -44,7 +55,14 @@ export class HolidaysComponent {
     fromHolidays.selectCanRedo()
   );
 
-  constructor(private store: Store) {}
+  constructor(
+    private store: Store,
+    private holidaysRepo: HolidaysEntityCollectionService,
+    private config: Configuration
+  ) {
+    this.holidaysRepo;
+    holidaysRepo.getAll();
+  }
 
   addFavourite(id: number) {
     this.store.dispatch(actions.addFavourite({ id }));

@@ -9,7 +9,7 @@ import { HolidaysComponentModule } from './holidays/holidays.component.module';
 import { RequestInfoComponent } from './request-info/request-info.component';
 import { RequestInfoComponentModule } from './request-info/request-info.component.module';
 import { HolidayDataGuard } from './holiday-data.guard';
-import { EntityDefinitionService } from '@ngrx/data';
+import { EntityDefinitionService, PLURAL_NAMES_TOKEN } from '@ngrx/data';
 
 @NgModule({
   imports: [
@@ -34,11 +34,18 @@ import { EntityDefinitionService } from '@ngrx/data';
     StoreModule.forFeature(holidaysFeature),
     EffectsModule.forFeature([HolidaysEffects]),
   ],
+  providers: [
+    {
+      provide: PLURAL_NAMES_TOKEN,
+      multi: true,
+      useValue: { Holiday: 'Holiday' },
+    },
+  ],
 })
 export class HolidaysFeatureModule {
   constructor(entityDefinitionService: EntityDefinitionService) {
     entityDefinitionService.registerMetadataMap({
-      Holiday: {},
+      Holiday: { additionalCollectionState: { favouriteIds: [] } },
     });
   }
 }

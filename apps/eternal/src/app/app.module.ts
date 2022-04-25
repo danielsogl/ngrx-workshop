@@ -27,6 +27,14 @@ import {
   LocalStorageEffects,
   localStorageReducer,
 } from '@eternal/core/local-storage-state';
+import {
+  DefaultDataServiceConfig,
+  EntityCollectionReducerMethodsFactory,
+  EntityDataModule,
+  PersistenceResultHandler,
+} from '@ngrx/data';
+import { AdditionalPersistenceResultHandler } from '../../../../libs/customers/data/src/lib/entity-data/additional-persistence-result-handler';
+import { AdditionalEntityCollectionReducerMethodsFactory } from '../../../../libs/customers/data/src/lib/entity-data/additional-entity-collection-reducer-methods-factory';
 
 registerLocaleData(localeDe, 'de-AT');
 
@@ -46,6 +54,7 @@ registerLocaleData(localeDe, 'de-AT');
       }
     ),
     EffectsModule.forRoot([LocalStorageEffects]),
+    EntityDataModule.forRoot({ pluralNames: { Holiday: 'Holiday' } }),
     StoreDevtoolsModule.instrument(),
     SecurityModule,
     FormlyModule.forRoot({
@@ -76,6 +85,18 @@ registerLocaleData(localeDe, 'de-AT');
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { appearance: 'outline' },
+    },
+    {
+      provide: DefaultDataServiceConfig,
+      useValue: { root: environment.baseUrl },
+    },
+    {
+      provide: PersistenceResultHandler,
+      useClass: AdditionalPersistenceResultHandler,
+    },
+    {
+      provide: EntityCollectionReducerMethodsFactory,
+      useClass: AdditionalEntityCollectionReducerMethodsFactory,
     },
   ],
   bootstrap: [AppComponent],

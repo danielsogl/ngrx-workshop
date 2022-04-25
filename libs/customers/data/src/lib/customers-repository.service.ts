@@ -6,6 +6,7 @@ import * as customersActions from './customers.actions';
 import { Observable } from 'rxjs';
 import { deepClone, filterDefined } from '@eternal/shared/ngrx-utils';
 import { customersFeature } from './customers.reducer';
+import { CustomersEntityCollectionService } from './entity-data/customers-entity-collection.service';
 
 @Injectable({ providedIn: 'root' })
 export class CustomersRepository {
@@ -40,10 +41,14 @@ export class CustomersRepository {
       .pipe(filterDefined, deepClone);
   }
 
-  constructor(private store: Store) {}
+  constructor(
+    private store: Store,
+    private entityCollection: CustomersEntityCollectionService
+  ) {}
 
   init(): void {
     this.store.dispatch(customersActions.init());
+    this.entityCollection.getAll();
   }
 
   get(page: number): void {

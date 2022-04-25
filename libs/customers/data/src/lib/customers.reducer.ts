@@ -1,5 +1,5 @@
 import { Customer } from '@eternal/customers/model';
-import { createFeature, on } from '@ngrx/store';
+import { createFeature, createReducer, on } from '@ngrx/store';
 import {
   init,
   load,
@@ -45,7 +45,7 @@ const { createUndoRedoReducer } = undoRedo({
 
 export const customersFeature = createFeature({
   name: 'customers',
-  reducer: createUndoRedoReducer<CustomersState>(
+  reducer: createReducer<CustomersState>(
     initialState,
     immerOn(init, (state) => {
       if (state.hasError) {
