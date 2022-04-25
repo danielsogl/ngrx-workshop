@@ -1,9 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
-import { CustomersEffects } from './+state/customers.effects';
-import { customersFeature } from './+state/customers.reducer';
 import {
   AddCustomerComponent,
   AddCustomerComponentModule,
@@ -17,6 +13,7 @@ import {
   EditCustomerComponentModule,
 } from './components/edit-customer.component';
 import { DataGuard } from './services/data.guard';
+import { CustomersDataModule } from '@eternal/customers/data';
 import { CustomersRootComponentModule } from './components/customers-root/customers-root.component.module';
 import { CustomersRootComponent } from './components/customers-root/customers-root.component';
 
@@ -49,8 +46,7 @@ import { CustomersRootComponent } from './components/customers-root/customers-ro
         ],
       },
     ]),
-    StoreModule.forFeature(customersFeature),
-    EffectsModule.forFeature([CustomersEffects]),
+    CustomersDataModule,
   ],
 })
 export class CustomersFeatureModule {}
