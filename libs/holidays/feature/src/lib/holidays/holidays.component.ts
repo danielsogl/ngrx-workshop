@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { fromHolidays, holidaysActions } from '@eternal/holidays/data';
 import { Holiday } from '@eternal/holidays/model';
+import { fromHolidays, holidaysActions } from '@eternal/holidays/data';
 
 @Component({
   selector: 'eternal-holidays',
