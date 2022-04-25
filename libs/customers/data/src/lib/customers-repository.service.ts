@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
 import { Customer } from '@eternal/customers/model';
-import { fromCustomers } from '@eternal/customers/data';
+import { Observable } from 'rxjs';
+import { fromCustomers } from './customers.selectors';
 import * as customersActions from './customers.actions';
+import { deepClone, filterDefined } from '@eternal/shared/ngrx-utils';
 
 @Injectable({ providedIn: 'root' })
 export class CustomersRepository {
-  readonly customers$: Observable<Customer[]> = this.store.select(
-    fromCustomers.selectCustomers
-  );
+  readonly customers$: Observable<Customer[]> = this.store
+    .select(fromCustomers.selectCustomers)
+    .pipe(deepClone);
 
   readonly pagedCustomers$: Observable<{
     customers: (Customer & { selected: boolean })[];
@@ -17,11 +18,14 @@ export class CustomersRepository {
     page: number;
   }> = this.store.select(fromCustomers.selectPagedCustomers);
 
-  readonly selectedCustomer$: Observable<Customer | undefined> =
-    this.store.select(fromCustomers.selectSelectedCustomer);
+  readonly selectedCustomer$: Observable<Customer> = this.store
+    .select(fromCustomers.selectSelectedCustomer)
+    .pipe(filterDefined, deepClone);
 
-  findById(id: number): Observable<Customer | undefined> {
-    return this.store.select(fromCustomers.selectById(id));
+  findById(id: number): Observable<Customer> {
+    return this.store
+      .select(fromCustomers.selectById(id))
+      .pipe(filterDefined, deepClone);
   }
 
   constructor(private store: Store) {}
