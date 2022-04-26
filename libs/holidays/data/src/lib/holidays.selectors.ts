@@ -18,9 +18,15 @@ const selectIdTitles = createSelector(
   (holidays) => holidays.map(({ id, title }) => ({ id, title }))
 );
 
+const isLoaded = createSelector(
+  holidaysFeature.selectLoadStatus,
+  (loadStatus) => loadStatus === 'loaded'
+);
+
 export const fromHolidays = {
   get: holidaysFeature.selectHolidays,
   selectHolidaysWithFavourite,
   selectIdTitles,
   selectLoadStatus,
+  isLoaded,
 };
