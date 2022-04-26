@@ -30,6 +30,7 @@ export const holidaysFeature = createFeature({
     })),
     on(loaded, (state, { holidays }) => ({
       ...state,
+      loadStatus: 'loaded',
       holidays,
       loadStatus: 'loaded',
     })),

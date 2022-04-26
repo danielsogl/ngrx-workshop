@@ -5,7 +5,7 @@ import { HolidaysComponentModule } from './holidays/holidays.component.module';
 import { RequestInfoComponent } from './request-info/request-info.component';
 import { RequestInfoComponentModule } from './request-info/request-info.component.module';
 import { HolidaysDataModule } from '@eternal/holidays/data';
-import { DataGuard } from './data.guard';
+import { HolidaysDataGuard } from './holidays-data.guard';
 
 @NgModule({
   imports: [
@@ -14,7 +14,7 @@ import { DataGuard } from './data.guard';
     RouterModule.forChild([
       {
         path: '',
-        canActivate: [DataGuard],
+        canActivate: [HolidaysDataGuard],
         children: [
           {
             path: '',

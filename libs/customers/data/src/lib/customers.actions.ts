@@ -1,11 +1,14 @@
 import { Customer } from '@eternal/customers/model';
 import { createAction, props } from '@ngrx/store';
 
+export const init = createAction('[Customers] Init');
+export const get = createAction('[Customers] Get', props<{ page: number }>());
 export const load = createAction('[Customers] Load', props<{ page: number }>());
-export const loaded = createAction(
-  '[Customers] Loaded',
+export const loadSuccess = createAction(
+  '[Customers] Load Success',
   props<{ customers: Customer[]; total: number; page: number }>()
 );
+export const loadFailure = createAction('[Customers] Load Failure');
 
 export const add = createAction(
   '[Customers] Add',
@@ -18,7 +21,12 @@ export const added = createAction(
 
 export const update = createAction(
   '[Customers] Update',
-  props<{ customer: Customer }>()
+  props<{
+    customer: Customer;
+    forward: string;
+    message: string;
+    callback?: () => void;
+  }>()
 );
 export const updated = createAction(
   '[Customers] Updated',
