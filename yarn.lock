@@ -1589,6 +1589,41 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
+"@ngneat/elf-devtools@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@ngneat/elf-devtools/-/elf-devtools-1.2.1.tgz#8b137328df8a328cc472f9609477282dc506883b"
+  integrity sha512-emoTCmOxzFI3H04HGpagfaMY9OzmoCvTLoKGvTtN0Fx+JHLhj/HXzSzirAxrkWUwmNTAhCcOmbPPNjAeL1QAuA==
+
+"@ngneat/elf-entities@^4.3.0":
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/@ngneat/elf-entities/-/elf-entities-4.3.0.tgz#62388aa4de265c2be15807c71c4d766b380f4a55"
+  integrity sha512-1ww6zQwMA3QJ9Q6waDylq2p23ND7G0v0P6/DREVH3AX30EqjsB1fgP/XD6YenkiKxReiJkVmavfj3DwRTvhDEg==
+
+"@ngneat/elf-pagination@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@ngneat/elf-pagination/-/elf-pagination-1.0.0.tgz#ff49146927dd8382a52fd7a9d2185d5a15cc12b0"
+  integrity sha512-AbUih9Ji6Hp+j1g2mxy94LPF9uhPGGaYR8nyz8ddeD1XGHxlxweGDbhfCZT0XNnKc5OpvH1oh3W+okFFptWcfg==
+
+"@ngneat/elf-persist-state@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@ngneat/elf-persist-state/-/elf-persist-state-1.1.1.tgz#ccd5f15128000a816db09b34e26d8d97d4451a04"
+  integrity sha512-19riZeAul29RDpoizeFYJtRddVUiTVGZLKivhZPVzeezLuH6dJTpkd1kLy3jGhlS6UOQX4NKJUl72HqYGiF0zA==
+
+"@ngneat/elf-requests@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@ngneat/elf-requests/-/elf-requests-1.1.2.tgz#decf6f7a2abd3916015a7049c14fd05f42d0a56b"
+  integrity sha512-rUhDXQXUUes6pg3T9ipHRNtEy/xhitUr8fLMHSB8DfPicd7x9LwmR+CbnWZy9TbPOR8/nQxedLc6PrdhmRa+UA==
+
+"@ngneat/elf-state-history@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@ngneat/elf-state-history/-/elf-state-history-1.0.1.tgz#f00e41ac2258b5d2e0ac93b4c1c428e985f3d2f1"
+  integrity sha512-CSH8LTDL/xUGxgEJl2L2l+EXuMo2VHLdbRzxDcmJLTIgrMwm7celTpkLcGK/vwbreyUFnH85YyLQzVHl+UFowQ==
+
+"@ngneat/elf@^1.5.6":
+  version "1.5.6"
+  resolved "https://registry.yarnpkg.com/@ngneat/elf/-/elf-1.5.6.tgz#63e684a89433f65883ee505cc2c747b7c5abc14f"
+  integrity sha512-1k9QezigcasLZNLCRHB1VZU42aeZWkujp96L+RwWtZvjOTKpz7hqP0ZtddW/C4j8gF42lUcE/MlaBExTGZo3Og==
+
 "@ngrx/component@^13.0.2":
   version "13.0.2"
   resolved "https://registry.yarnpkg.com/@ngrx/component/-/component-13.0.2.tgz#7555e126061f054a1654134cd5223b61e52130f2"
