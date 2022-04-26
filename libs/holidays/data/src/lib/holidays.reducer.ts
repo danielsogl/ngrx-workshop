@@ -32,7 +32,6 @@ export const holidaysFeature = createFeature({
       ...state,
       loadStatus: 'loaded',
       holidays,
-      loadStatus: 'loaded',
     })),
     on(favouriteAdded, (state, { id }) => {
       if (state.favouriteIds.includes(id)) {

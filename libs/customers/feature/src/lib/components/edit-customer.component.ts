@@ -52,7 +52,7 @@ export class EditCustomerComponent {
       { ...customer, id: this.customerId },
       urlTree.toString(),
       'Customer has been updated',
-      () => (this.disableSubmitButton = true)
+      () => (this.disableSubmitButton = false)
     );
   }
 

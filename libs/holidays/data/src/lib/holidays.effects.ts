@@ -2,9 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Holiday } from '@eternal/holidays/model';
 import { Configuration } from '@eternal/shared/config';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType, OnInitEffects } from '@ngrx/effects';
 import { concatMap, map, switchMap } from 'rxjs/operators';
 import * as actions from './holidays.actions';
+import { load } from './holidays.actions';
 
 @Injectable()
 export class HolidaysEffects implements OnInitEffects {
@@ -49,8 +50,7 @@ export class HolidaysEffects implements OnInitEffects {
   constructor(
     private actions$: Actions,
     private httpClient: HttpClient,
-    private config: Configuration,
-    private store: Store
+    private config: Configuration
   ) {}
 
   ngrxOnInitEffects() {
