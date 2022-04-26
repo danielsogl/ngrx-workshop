@@ -11,7 +11,6 @@ import { holidaysFeature } from './holidays.reducer';
 import { fromHolidays } from './holidays.selectors';
 import { firstValueFrom } from 'rxjs';
 import { createHolidays } from '@eternal/holidays/model';
-import { get } from './holidays.actions';
 
 describe('Holidays Data', () => {
   let store: Store;
@@ -44,7 +43,7 @@ describe('Holidays Data', () => {
       { title: 'Tower Bridge' }
     );
 
-    store.dispatch(get());
+    // store.dispatch(get());
     httpCtrl.expectOne('/holiday').flush(holidays);
 
     expect(await firstValueFrom(store.select(fromHolidays.get))).toEqual(
