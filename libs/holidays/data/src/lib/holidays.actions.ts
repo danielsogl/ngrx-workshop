@@ -11,6 +11,11 @@ export const addFavourite = createAction(
   '[Holidays] Add Favourite',
   props<{ id: number }>()
 );
+
+export const addFavouriteUndo = createAction(
+  '[Holidays] Add Favourite Undo',
+  props<{ id: number }>()
+);
 export const favouriteAdded = createAction(
   '[Holidays] Favourite Added',
   props<{ id: number }>()

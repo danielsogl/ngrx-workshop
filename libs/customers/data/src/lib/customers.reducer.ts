@@ -61,3 +61,7 @@ export const customersFeature = createFeature({
     }))
   ),
 });
+
+export interface CustomersAppState {
+  [customersFeature.name]: CustomersState;
+}

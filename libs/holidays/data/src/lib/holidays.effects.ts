@@ -6,6 +6,7 @@ import { Actions, createEffect, ofType, OnInitEffects } from '@ngrx/effects';
 import { concatMap, map, switchMap } from 'rxjs/operators';
 import * as actions from './holidays.actions';
 import { load } from './holidays.actions';
+import { optimisticUpdate } from '@nrwl/angular';
 
 @Injectable()
 export class HolidaysEffects implements OnInitEffects {
@@ -28,11 +29,13 @@ export class HolidaysEffects implements OnInitEffects {
   addFavourite$ = createEffect(() =>
     this.actions$.pipe(
       ofType(actions.addFavourite),
-      concatMap(({ id }) =>
-        this.httpClient
-          .post<void>(`${this.#baseUrl}/favourite/${id}`, {})
-          .pipe(map(() => actions.favouriteAdded({ id })))
-      )
+      optimisticUpdate({
+        run: ({ id }) =>
+          this.httpClient
+            .post<void>(`${this.#baseUrl}/favourite/${id}`, {})
+            .pipe(map(() => actions.favouriteAdded({ id }))),
+        undoAction: ({ id }) => actions.addFavouriteUndo({ id }),
+      })
     )
   );
 
